@@ -47,7 +47,7 @@ public class Utente implements UserDetails {
     @Column(nullable = false)
     private Role ruolo;
 
-    // Metodi per la sicurezza
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.ruolo.name()));
