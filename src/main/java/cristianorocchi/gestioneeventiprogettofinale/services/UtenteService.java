@@ -2,6 +2,8 @@ package cristianorocchi.gestioneeventiprogettofinale.services;
 
 
 import cristianorocchi.gestioneeventiprogettofinale.entities.Utente;
+import cristianorocchi.gestioneeventiprogettofinale.exceptions.BadRequestException;
+import cristianorocchi.gestioneeventiprogettofinale.exceptions.NotFoundException;
 import cristianorocchi.gestioneeventiprogettofinale.repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,23 +20,24 @@ public class UtenteService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    //public Utente registraNuovoUtente(Utente nuovoUtente) {
-        //utenteRepository.findByEmail(nuovoUtente.getEmail()).ifPresent(u -> {
-          //  throw new BadRequestException("L'email " + nuovoUtente.getEmail() + " è già in uso.");
-       // });
+    public Utente registraNuovoUtente(Utente nuovoUtente) {
+        utenteRepository.findByEmail(nuovoUtente.getEmail()).ifPresent(u -> {
+            throw new BadRequestException("L'email " + nuovoUtente.getEmail() + " è già in uso.");
 
-       // nuovoUtente.setPassword(passwordEncoder.encode(nuovoUtente.getPassword()));
-       // return utenteRepository.save(nuovoUtente);
-  // }
+        });
+
+        nuovoUtente.setPassword(passwordEncoder.encode(nuovoUtente.getPassword()));
+        return utenteRepository.save(nuovoUtente);
+   }
 
     public List<Utente> trovaTutti() {
         return utenteRepository.findAll();
     }
 
-   // public Utente trovaPerId(Long id) {
-       // return utenteRepository.findById(id)
-        //        .orElseThrow(() -> new NotFoundException("Utente con id " + id + " non trovato"));
-   // }
+    public Utente trovaPerId(Long id) {
+        return utenteRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Utente con id " + id + " non trovato"));
+    }
 
     public Utente aggiornaUtente(Long id, Utente utenteAggiornato) {
         Utente utenteEsistente = trovaPerId(id);
