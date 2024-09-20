@@ -43,9 +43,9 @@ public class Utente implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role ruolo;
+    @Enumerated(EnumType.STRING)
+    private Role ruolo = Role.USER;
 
 
     @Override
